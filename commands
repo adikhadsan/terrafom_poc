@@ -197,6 +197,9 @@ sudo ./aws/install
 
 AWS Configure
 
+aws configure set aws_access_key_id ""
+user@user-ThinkPad-T470s:~$ aws configure set aws_secret_access_key ""
+user@user-ThinkPad-T470s:~$ aws configure set region "us-east-1"
 
 
 
