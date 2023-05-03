@@ -205,3 +205,45 @@ user@user-ThinkPad-T470s:~$ aws configure set region "us-east-1"
 
 
 spark-opr link - https://googlecloudplatform.github.io/spark-on-k8s-operator/
+
+#!/usr/bin/env bash
+sleep 300
+kube_namespaces=($(/snap/bin/microk8s.kubectl get secret --all-namespaces | grep regcred | awk '{print $1}'))
+for i in "${kube_namespaces[@]}"
+do
+  :
+  echo "$(date): Updating secret for namespace - $i"
+  /snap/bin/microk8s.kubectl delete secret regcred --namespace $i
+  /snap/bin/microk8s.kubectl create secret docker-registry regcred \
+  --docker-server=102539048997.dkr.ecr.ap-south-1.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  --namespace=$i
+done
+
+
+
+*/5 * * * *    /home/ubuntu/updator/ecr.sh >> /home/ubuntu/updater/log/aws-ecr-update-credentials.log 2>&1
+@reboot /home/ubuntu/updator/ecr.sh >> /home/ubuntu/updater/log/aws-ecr-update-credentials.log 2>&1
+
+
+#!/usr/bin/env bash
+sudo microk8s refresh-certs -e front-proxy-client.crt
+sudo microk8s refresh-certs -e server.crt
+sudo microk8s refresh-certs -c
+
+create ns cdo-pco
+
+dde
+
+dce
+
+pb
+
+ /snap/bin/microk8s.kubectl create secret docker-registry regcred \
+  --docker-server=406250959263.dkr.ecr.ap-south-1.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password) \
+  --namespace=cdo-pco
+
+
